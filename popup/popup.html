@@ -13,7 +13,16 @@
       <span data-i18n="tagline"></span>
     </div>
     <span id="status" class="status" hidden><i class="dot"></i><span id="connText"></span></span>
+    <button id="donateBtn" class="heart" type="button" data-i18n-title="donate"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span data-i18n="donate"></span></button>
   </header>
+
+  <section id="donate" class="donate" hidden>
+    <img class="qr" src="../icons/pix-qr.png" width="220" height="220" alt="QR Code Pix">
+    <p class="lead" data-i18n="donateText"></p>
+    <div class="pixkey"><span class="label" data-i18n="pixKey"></span><code id="pixKey"></code></div>
+    <button id="copyPix" class="btn primary" type="button" data-i18n="copyPix"></button>
+    <button id="donateBack" class="btn" type="button" data-i18n="back"></button>
+  </section>
 
   <main id="app" hidden>
     <!-- Page without our content script -->

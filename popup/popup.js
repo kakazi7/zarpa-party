@@ -10,6 +10,7 @@
 
   for (const el of document.querySelectorAll('[data-i18n]')) el.textContent = t(el.dataset.i18n);
   for (const el of document.querySelectorAll('[data-i18n-placeholder]')) el.placeholder = t(el.dataset.i18nPlaceholder);
+  for (const el of document.querySelectorAll('[data-i18n-title]')) el.title = t(el.dataset.i18nTitle);
   document.documentElement.lang = chrome.i18n.getUILanguage();
 
   // Null when the tab has no content script (unsupported site, or not enabled yet).
@@ -95,6 +96,21 @@
   $('toggle').addEventListener('click', () => act({ zp: 'toggle' }));
   $('hostOnly').addEventListener('change', (e) => act({ zp: 'setHostOnly', value: e.target.checked }));
   $('name').addEventListener('change', (e) => act({ zp: 'setName', name: e.target.value }));
+
+  const showDonate = (on) => {
+    document.body.classList.toggle('donating', on);
+    $('donate').hidden = !on;
+  };
+  $('pixKey').textContent = core.PIX.key;
+  $('donateBtn').addEventListener('click', () => showDonate(true));
+  $('donateBack').addEventListener('click', () => showDonate(false));
+  $('copyPix').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(core.pixPayload());
+      $('copyPix').textContent = t('copied');
+      setTimeout(() => ($('copyPix').textContent = t('copyPix')), 1600);
+    } catch {}
+  });
 
   $('joinForm').addEventListener('submit', async (e) => {
     e.preventDefault();

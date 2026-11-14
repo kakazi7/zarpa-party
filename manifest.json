@@ -59,6 +59,31 @@
       "js": ["content/netflix-main.js"],
       "world": "MAIN",
       "run_at": "document_start"
+    },
+    {
+      "matches": ["https://*.netflix.com/*"],
+      "js": ["content/netflix-buttons.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/pix-qr.png"],
+      "matches": [
+        "https://*.netflix.com/*",
+        "https://*.youtube.com/*",
+        "https://*.primevideo.com/*",
+        "https://*.amazon.com/*",
+        "https://*.disneyplus.com/*",
+        "https://*.max.com/*",
+        "https://*.hbomax.com/*",
+        "https://*.crunchyroll.com/*",
+        "https://globoplay.globo.com/*",
+        "https://*.paramountplus.com/*",
+        "https://tv.apple.com/*",
+        "https://*.twitch.tv/*",
+        "https://*.vimeo.com/*"
+      ]
     }
   ],
   "commands": {

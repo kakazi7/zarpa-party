@@ -2,6 +2,25 @@
 
 Watch-together Chrome extension: synced play / pause / seek / speed plus a chat sidebar, between friends on streaming sites. Manifest V3, vanilla JS, no build step, no server code.
 
+## ☕ Support / Apoie
+
+[![Pix](https://img.shields.io/badge/Pix-Donate-32BCAD?logo=pix&logoColor=white)](#-support--apoie)
+
+<img src="icons/pix-qr.png" width="240" alt="QR Code Pix">
+
+- **pt-BR:** A Zarpa Party é grátis e sem anúncios. Curtiu? Pague um café pro dev via Pix (valor livre).
+- **en:** Zarpa Party is free and ad-free. Enjoying it? Buy the dev a coffee via Pix (any amount).
+
+Pix key: `contato@zarpadev.com.br`
+
+Pix copia e cola:
+
+```
+00020126450014br.gov.bcb.pix0123contato@zarpadev.com.br5204000053039865802BR5911KAUA PESSIN6007VITORIA62070503***6304A70B
+```
+
+Regenerate payload and QR: `node scripts/make-pix.mjs` (see the header of the script).
+
 ## Features
 
 - **One-click party**: "Criar Party" in the popup creates a room, joins it and copies the invite link. Opening the link with the extension installed joins automatically. A code or link can also be pasted in the popup.

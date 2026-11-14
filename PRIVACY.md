@@ -27,6 +27,7 @@ Nothing is transmitted when you are not in a party.
 - No browsing history. The extension only runs on the supported video sites and on sites you explicitly enable.
 - No analytics, advertising, tracking or fingerprinting.
 - No access to your streaming credentials or to the video content itself.
+- The optional donation panel only shows a static Pix QR code and key; nothing about you is collected or sent.
 - Data is never sold or shared with third parties, and never used for purposes unrelated to watching together.
 
 ## Who can see party data

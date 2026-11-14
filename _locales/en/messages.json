@@ -59,5 +59,11 @@
   "sysAutoplayBlocked": { "message": "The browser blocked autoplay. Click the video to sync." },
   "sysNav": { "message": "$1 opened another video." },
   "sysJoined": { "message": "$1 joined" },
-  "sysLeft": { "message": "$1 left" }
+  "sysLeft": { "message": "$1 left" },
+  "donate": { "message": "Donate" },
+  "donateText": { "message": "Zarpa Party is free and ad-free. Enjoying it? Buy the dev a coffee ☕" },
+  "pixKey": { "message": "Pix key" },
+  "copyPix": { "message": "Copy Pix code" },
+  "back": { "message": "Back" },
+  "nfStart": { "message": "Start Zarpa Party" }
 }

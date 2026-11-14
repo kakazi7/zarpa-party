@@ -59,5 +59,11 @@
   "sysAutoplayBlocked": { "message": "O navegador bloqueou o play automático. Clique no vídeo para sincronizar." },
   "sysNav": { "message": "$1 abriu outro vídeo." },
   "sysJoined": { "message": "$1 entrou" },
-  "sysLeft": { "message": "$1 saiu" }
+  "sysLeft": { "message": "$1 saiu" },
+  "donate": { "message": "Apoiar" },
+  "donateText": { "message": "A Zarpa Party é grátis e sem anúncios. Curtiu? Pague um café pro dev ☕" },
+  "pixKey": { "message": "Chave Pix" },
+  "copyPix": { "message": "Copiar Pix copia e cola" },
+  "back": { "message": "Voltar" },
+  "nfStart": { "message": "Iniciar Zarpa Party" }
 }

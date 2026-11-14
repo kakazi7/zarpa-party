@@ -141,7 +141,32 @@
       if (remotes.has(best)) remotes.get(best).at = Date.now(); // it starts reporting now
       log('driver', driver);
       announceParty();
+      if (driver) autostart();
     }
+
+    // Set by content/netflix-buttons.js ("Start Zarpa Party" on the browse UI): create a party as
+    // soon as the next video is ready. Only honoured for ~60s so a stale click never fires later.
+    const AUTOSTART_KEY = 'zarpaPartyAutostart';
+    function autostart() {
+      let at = 0;
+      try {
+        at = Number(sessionStorage.getItem(AUTOSTART_KEY)) || 0;
+        if (at && (Date.now() - at > 60000 || S.room)) {
+          sessionStorage.removeItem(AUTOSTART_KEY);
+          at = 0;
+        }
+      } catch {}
+      if (!at || !location.pathname.startsWith('/watch/')) return;
+      ensurePlayer();
+      if (!driver) return; // chooseDriver calls back once the video shows up
+      try {
+        sessionStorage.removeItem(AUTOSTART_KEY);
+      } catch {}
+      join(core.generateRoomCode(), true); // same as the popup's "Create Party"
+      ui.toggle(true);
+      copyLink();
+    }
+    ZP.autostart = autostart; // netflix-buttons.js shares this isolated world; it calls this after SPA navigation
 
     const announceParty = () => relay('all', { k: 'party', active: !!S.room, driver });
 
@@ -325,7 +350,9 @@
         await navigator.clipboard.writeText(inviteLink());
         ui.addSystem(t('sysLinkCopied'));
       } catch {
-        ui.addSystem(inviteLink()); // clipboard blocked by the page: show it so it can be copied by hand
+        // Clipboard blocked (no user gesture, page policy): show the link with a button that copies on click.
+        const link = inviteLink();
+        ui.addSystem(link, { label: t('copyLink'), run: () => navigator.clipboard.writeText(link).then(() => ui.addSystem(t('sysLinkCopied')), () => {}) });
       }
     }
 
@@ -689,6 +716,7 @@
       if (!name) chrome.storage.local.set({ name: S.name }).catch(() => {});
       const code = invited || store.get()?.room;
       if (code && !S.room) join(code, false);
+      else autostart();
     });
   }
 })();

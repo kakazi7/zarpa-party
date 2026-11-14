@@ -92,6 +92,7 @@ Zarpa Party has one purpose: letting a group of people watch the same online vid
 ## Data usage disclosures (Privacy practices tab)
 
 - Collected/transmitted: "Personal communications" (chat messages) and "Website content" is not collected; "User activity" limited to playback events inside a party. Mark chat messages and the nickname as transmitted for the app's core functionality.
+- Optional Pix donation panel (popup and sidebar): a static QR code and key, no data collected or sent.
 - Not sold, not used for unrelated purposes, not used for creditworthiness or lending.
 - Privacy policy URL: public URL where `PRIVACY.md` is hosted.
 

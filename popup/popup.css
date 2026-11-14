@@ -83,6 +83,16 @@ input[type="text"]:focus { border-color: var(--accent); }
 .inline { display: flex; gap: 8px; }
 .inline input { flex: 1; min-width: 0; }
 
+.heart { display: inline-flex; align-items: center; gap: 5px; height: 30px; padding: 0 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer; flex: none; transition: color .15s, border-color .15s; }
+.heart svg { width: 14px; height: 14px; fill: currentColor; }
+.heart:hover { color: #ff7a90; border-color: rgba(255, 122, 144, .4); }
+body.donating main, body.donating .foot, body.donating .heart { display: none !important; }
+.donate { padding: 0 16px 16px; gap: 10px; animation: in .24s var(--ease); }
+.qr { width: 100%; max-width: 240px; height: auto; aspect-ratio: 1; justify-self: center; background: #fff; border-radius: var(--radius); image-rendering: pixelated; }
+.donate .lead { text-align: center; font-size: 13px; }
+.pixkey { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+.pixkey code { font: 12px ui-monospace, Consolas, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; user-select: all; }
+
 .foot { padding: 10px 16px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); background: var(--surface); }
 
 @keyframes in { from { opacity: 0; transform: translateY(4px); } }

@@ -92,6 +92,14 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
 .zp.open .tab { display: none; }
 .badge { position: absolute; top: -7px; left: -7px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 99px; background: var(--accent); color: var(--accent-ink); font-size: 11px; font-weight: 700; display: grid; place-items: center; animation: pop .3s var(--ease); }
 
+.donate { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 14px; display: flex; flex-direction: column; gap: 10px; animation: in .22s var(--ease); }
+.donate img { width: 100%; max-width: 260px; aspect-ratio: 1; align-self: center; background: #fff; border-radius: var(--radius); image-rendering: pixelated; }
+.donate p { margin: 0; text-align: center; color: var(--muted); font-size: 13px; }
+.donate code { font: 12px ui-monospace, Consolas, monospace; text-align: center; overflow-wrap: anywhere; user-select: all; }
+.donate .btn { height: 38px; border-radius: var(--radius); font-weight: 600; background: var(--surface-2); border: 1px solid var(--line); }
+.donate .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.icon.heart:hover { color: #ff7a90; }
+
 .fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
 .zp.open .fx { right: min(var(--w), 100vw); }
 .fx span { position: absolute; bottom: 14%; font-size: 38px; line-height: 1; animation: rise 2.6s cubic-bezier(.2, .6, .3, 1) forwards; text-shadow: 0 4px 18px rgba(0, 0, 0, .5); }
@@ -119,6 +127,7 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
     link: 'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1',
     leave: 'M14 4h5v16h-5M10 8l-4 4 4 4M6 12h9',
     edit: 'M4 20h4L19 9l-4-4L4 16z',
+    heart: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
   };
 
   function icon(name) {
@@ -204,13 +213,33 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
     const badge = h('span', { class: 'badge', hidden: '' });
     const tab = h('button', { class: 'tab', type: 'button', 'aria-label': t('uiExpand'), title: t('uiExpand'), onclick: () => toggle(true) }, icon('chat'), badge);
     const fx = h('div', { class: 'fx', 'aria-hidden': 'true' });
+
+    // Pix donation pane, swapped in for the chat. The QR PNG is a web-accessible resource; if the
+    // page blocks it (CSP, hand-enabled site) the key and copy button still work.
+    const qr = h('img', { alt: 'QR Code Pix', width: '260', height: '260', src: chrome.runtime.getURL('icons/pix-qr.png') });
+    qr.addEventListener('error', () => (qr.hidden = true));
+    const copyPix = h('button', { class: 'btn primary', type: 'button', text: t('copyPix'), onclick: () => {
+      navigator.clipboard.writeText(ZP.core.pixPayload()).then(() => {
+        copyPix.textContent = t('copied');
+        setTimeout(() => (copyPix.textContent = t('copyPix')), 1600);
+      }, () => {});
+    } });
+    const donate = h('div', { class: 'donate', hidden: '' }, qr, h('p', { text: t('donateText') }),
+      h('code', { text: ZP.core.PIX.key }), copyPix,
+      h('button', { class: 'btn', type: 'button', text: t('back'), onclick: () => showDonate(false) }));
+    const heartBtn = h('button', { class: 'icon heart', type: 'button', 'aria-label': t('donate'), title: t('donate'), onclick: () => showDonate(donate.hidden) }, icon('heart'));
+    function showDonate(on) {
+      donate.hidden = !on;
+      log.hidden = reacts.hidden = composer.hidden = on;
+      heartBtn.setAttribute('aria-expanded', String(on));
+    }
     const panel = h('aside', { class: 'panel', 'aria-label': 'Zarpa Party' },
       h('div', { class: 'head' },
         h('span', { class: 'mark' }, icon('play')),
         h('span', { class: 'title', text: 'Zarpa Party' }),
-        dot, peopleBtn,
+        dot, heartBtn, peopleBtn,
         h('button', { class: 'icon', type: 'button', 'aria-label': t('uiCollapse'), title: t('uiCollapse'), onclick: () => toggle(false) }, icon('close'))),
-      peersBox, log, reacts, composer,
+      peersBox, log, donate, reacts, composer,
       h('div', { class: 'foot' }, meBtn, nameForm,
         h('button', { class: 'icon', type: 'button', 'aria-label': t('uiCopyLink'), title: t('uiCopyLink'), onclick: () => onCopy() }, icon('link')),
         h('button', { class: 'icon danger', type: 'button', 'aria-label': t('uiLeave'), title: t('uiLeave'), onclick: () => onLeave() }, icon('leave'))));

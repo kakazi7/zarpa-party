@@ -53,7 +53,7 @@ const jsFiles = [];
 
 const used = new Set();
 for (const m of JSON.stringify(manifest).matchAll(/__MSG_(\w+)__/g)) used.add(m[1]);
-for (const m of read(manifest.action.default_popup).matchAll(/data-i18n(?:-placeholder)?="(\w+)"/g)) used.add(m[1]);
+for (const m of read(manifest.action.default_popup).matchAll(/data-i18n(?:-placeholder|-title)?="(\w+)"/g)) used.add(m[1]);
 let sources = '';
 for (const f of jsFiles.filter((f) => /^(content|popup)\//.test(f))) {
   const src = read(f);

@@ -203,11 +203,28 @@
     }
   }
 
+  // Static Pix BR Code (EMV MPM) with no amount, so the donor picks it. CRC16-CCITT-FALSE.
+  const PIX = { key: 'contato@zarpadev.com.br', name: 'KAUA PESSIN', city: 'VITORIA' };
+  function crc16(str) {
+    let crc = 0xffff;
+    for (const byte of new TextEncoder().encode(str)) {
+      crc ^= byte << 8;
+      for (let i = 0; i < 8; i++) crc = crc & 0x8000 ? ((crc << 1) ^ 0x1021) & 0xffff : (crc << 1) & 0xffff;
+    }
+    return crc;
+  }
+  function pixPayload({ key, name, city } = PIX) {
+    const f = (id, v) => id + String(v.length).padStart(2, '0') + v;
+    const body = f('00', '01') + f('26', f('00', 'br.gov.bcb.pix') + f('01', key)) + f('52', '0000') + f('53', '986') +
+      f('58', 'BR') + f('59', name.slice(0, 25)) + f('60', city.slice(0, 15)) + f('62', f('05', '***')) + '6304';
+    return body + crc16(body).toString(16).toUpperCase().padStart(4, '0');
+  }
+
   const ZP = (globalThis.ZP = globalThis.ZP || {});
   ZP.core = {
     ALPHABET, PARAM, EMOJIS, DRIFT, MAX_CHAT, MAX_NAME,
     generateRoomCode, randomId, parseRoomCode, buildInviteLink, stripInvite, mediaKey, formatTime,
     extrapolate, isNewer, decideDrift, diffLocal, clockOffset, messageAge, pickHost, backoffDelay,
-    rateLimiter, cleanName, cleanText, colorFor, sanitizeMessage,
+    rateLimiter, cleanName, cleanText, colorFor, sanitizeMessage, PIX, crc16, pixPayload,
   };
 })();
