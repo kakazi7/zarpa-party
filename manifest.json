@@ -1,0 +1,70 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extName__",
+  "short_name": "Zarpa Party",
+  "description": "__MSG_extDescription__",
+  "version": "1.0.0",
+  "default_locale": "pt_BR",
+  "minimum_chrome_version": "111",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Zarpa Party",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage", "activeTab", "scripting"],
+  "optional_host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.netflix.com/*",
+        "https://*.youtube.com/*",
+        "https://*.primevideo.com/*",
+        "https://*.amazon.com/gp/video/*",
+        "https://*.disneyplus.com/*",
+        "https://*.max.com/*",
+        "https://*.hbomax.com/*",
+        "https://*.crunchyroll.com/*",
+        "https://globoplay.globo.com/*",
+        "https://*.paramountplus.com/*",
+        "https://tv.apple.com/*",
+        "https://*.twitch.tv/*",
+        "https://*.vimeo.com/*"
+      ],
+      "js": [
+        "config.js",
+        "content/core.js",
+        "content/realtime.js",
+        "content/player.js",
+        "content/ui.js",
+        "content/main.js"
+      ],
+      "all_frames": true,
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://*.netflix.com/*"],
+      "js": ["content/netflix-main.js"],
+      "world": "MAIN",
+      "run_at": "document_start"
+    }
+  ],
+  "commands": {
+    "toggle-sidebar": {
+      "suggested_key": { "default": "Alt+Shift+Z" },
+      "description": "__MSG_cmdToggle__"
+    }
+  }
+}

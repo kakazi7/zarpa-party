@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Zarpa Party harness</title>
+  <style>
+    body { margin: 0; padding: 24px; background: #0b0d10; color: #f2f4f7; font: 15px/1.5 system-ui, sans-serif; }
+    video { width: 100%; max-width: 860px; aspect-ratio: 16 / 9; background: #000; display: block; }
+    button, input { font: inherit; padding: 6px 10px; }
+  </style>
+</head>
+<body>
+  <!-- Dev-only: runs the real content scripts in a plain tab against a fake chrome.* API, so the
+       sidebar and sync can be exercised without installing the extension.
+       Serve the repo root over HTTP and open /tests/harness.html in two tabs.
+       Drive it from the console: await zp({ zp: 'create' }), zp({ zp: 'status' }), ... -->
+  <h1>Zarpa Party harness</h1>
+  <video id="v" controls muted playsinline preload="auto"></video>
+  <p><input id="url" size="70" value="https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm">
+     <button id="load">Load</button> <button id="create">Create party</button> <span id="link"></span></p>
+  <script>
+    const v = document.getElementById('v');
+    document.getElementById('load').onclick = () => { v.src = document.getElementById('url').value; };
+    v.src = document.getElementById('url').value;
+    const listeners = [];
+    const sender = { id: 'harness' };
+    let MSG = {};
+    window.chrome = {
+      runtime: {
+        id: 'harness',
+        sendMessage: async (m) => { if (m.zp === 'relay') for (const l of listeners) l({ zp: 'relayed', msg: m.msg }, sender, () => {}); },
+        onMessage: { addListener: (f) => listeners.push(f) },
+      },
+      i18n: {
+        getMessage: (k, subs = []) => ((MSG[k] || {}).message || '').replace(/\$(\d)/g, (_, n) => subs[n - 1]),
+        getUILanguage: () => 'pt-BR',
+      },
+      storage: { local: { get: async () => ({ name: sessionStorage.zpName }), set: async (o) => { sessionStorage.zpName = o.name; } } },
+    };
+    window.zp = (msg) => new Promise((resolve) => { for (const l of listeners) l(msg, sender, resolve); });
+    document.getElementById('create').onclick = async () => {
+      document.getElementById('link').textContent = (await zp({ zp: 'create' })).link;
+    };
+    (async () => {
+      MSG = await (await fetch('../_locales/pt_BR/messages.json')).json();
+      for (const src of ['config.js', 'content/core.js', 'content/realtime.js', 'content/player.js', 'content/ui.js', 'content/main.js']) {
+        await new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = '../' + src;
+          s.onload = resolve;
+          s.onerror = reject;
+          document.head.append(s);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

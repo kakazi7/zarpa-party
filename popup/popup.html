@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Zarpa Party</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="top">
+    <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></span>
+    <div class="brand">
+      <strong>Zarpa Party</strong>
+      <span data-i18n="tagline"></span>
+    </div>
+    <span id="status" class="status" hidden><i class="dot"></i><span id="connText"></span></span>
+  </header>
+
+  <main id="app" hidden>
+    <!-- Page without our content script -->
+    <section id="viewOff" hidden>
+      <p id="offText" class="lead"></p>
+      <button id="enable" class="btn primary" type="button" data-i18n="enableSite" hidden></button>
+      <p id="enableHint" class="hint" data-i18n="enableSiteHint" hidden></p>
+    </section>
+
+    <!-- Supported page, no party yet -->
+    <section id="viewIdle" hidden>
+      <button id="create" class="btn primary big" type="button" data-i18n="createParty"></button>
+      <p id="noVideo" class="hint" data-i18n="noVideoHint" hidden></p>
+    </section>
+
+    <!-- In a party -->
+    <section id="viewRoom" hidden>
+      <div class="room">
+        <div>
+          <span class="label" data-i18n="roomLabel"></span>
+          <code id="code"></code>
+        </div>
+        <button id="copy" class="btn primary" type="button" data-i18n="copyLink"></button>
+      </div>
+      <div class="card">
+        <div class="row">
+          <span class="label" data-i18n="participants"></span>
+          <span id="count" class="pill"></span>
+        </div>
+        <ul id="peers"></ul>
+      </div>
+      <label class="switch">
+        <span>
+          <span data-i18n="hostOnly"></span>
+          <small data-i18n="hostOnlyHint"></small>
+        </span>
+        <input id="hostOnly" type="checkbox" role="switch">
+        <i aria-hidden="true"></i>
+      </label>
+      <div class="actions">
+        <button id="toggle" class="btn" type="button" data-i18n="openChat"></button>
+        <button id="leave" class="btn danger" type="button" data-i18n="popLeave"></button>
+      </div>
+    </section>
+
+    <form id="joinForm" class="join" hidden>
+      <label class="label" for="joinInput" data-i18n="joinLabel"></label>
+      <div class="inline">
+        <input id="joinInput" type="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="joinPlaceholder">
+        <button class="btn" type="submit" data-i18n="join"></button>
+      </div>
+      <p id="joinError" class="error" role="alert" hidden></p>
+    </form>
+
+    <div id="nameBox" class="field" hidden>
+      <label class="label" for="name" data-i18n="nickname"></label>
+      <input id="name" type="text" maxlength="24" autocomplete="off">
+    </div>
+  </main>
+
+  <footer id="shortcut" class="foot" hidden></footer>
+
+  <script src="../content/core.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
