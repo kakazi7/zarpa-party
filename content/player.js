@@ -19,7 +19,11 @@
     let flushTimer = 0;
     let scanTimer = 0;
 
-    const shadowOf = (el) => (globalThis.chrome?.dom?.openOrClosedShadowRoot?.(el)) || el.shadowRoot;
+    // chrome.dom.openOrClosedShadowRoot throws for non-HTMLElement nodes (e.g. <svg>).
+    const shadowOf = (el) => {
+      if (!(el instanceof HTMLElement)) return null;
+      try { return globalThis.chrome?.dom?.openOrClosedShadowRoot?.(el) || el.shadowRoot; } catch { return el.shadowRoot; }
+    };
 
     function allVideos() {
       const found = [...document.querySelectorAll('video')];
